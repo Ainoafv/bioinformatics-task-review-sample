@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bioinformatics Task Sample</title>
+<meta name="description" content="A long-horizon bioinformatics task on public GEO data, an illustrative model answer, and a rubric-based review. Sample work by Ainoa Figueroa Vidal.">
+<style>
+  :root {
+    --ink:#1f2933; --muted:#5b6672; --blue:#1f4e79; --blue-2:#2d6aa3; --line:#d5dde6;
+    --bg:#ffffff; --panel:#f5f8fb; --code:#eef3f8;
+    --crit:#9b2c2c; --crit-bg:#fbeeee; --major:#8a5a00; --major-bg:#fdf5e6; --ok:#2f6f4f; --ok-bg:#ecf6f0;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:28px 16px 64px; }
+  header { border-left:4px solid var(--blue); padding-left:14px; margin-bottom:18px; }
+  h1 { font-size:26px; line-height:1.25; margin:0 0 6px; font-weight:650; }
+  .sub { color:var(--muted); margin:0; }
+  .who { color:var(--blue); font-weight:600; font-size:14px; letter-spacing:.3px; margin-bottom:6px; }
+  .intro { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px 16px; margin:18px 0 22px; }
+  .intro p { margin:0 0 6px; } .intro p:last-child { margin:0; }
+  nav.tabs { display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin-bottom:20px; position:sticky; top:0; background:var(--bg); z-index:5; padding-top:6px; }
+  nav.tabs button { font:inherit; font-size:15px; border:1px solid transparent; border-bottom:none; background:none; color:var(--muted); padding:9px 14px; border-radius:8px 8px 0 0; cursor:pointer; }
+  nav.tabs button[aria-selected="true"] { color:var(--blue); border-color:var(--line); background:var(--bg); font-weight:600; margin-bottom:-1px; }
+  nav.tabs button:focus-visible { outline:2px solid var(--blue-2); outline-offset:2px; }
+  section.panel { display:none; } section.panel.active { display:block; }
+  h2 { font-size:20px; margin:26px 0 10px; color:var(--blue); }
+  h2:first-child { margin-top:4px; }
+  h3 { font-size:16px; margin:18px 0 6px; }
+  p { margin:0 0 10px; }
+  .muted { color:var(--muted); }
+  .card { border:1px solid var(--line); border-radius:8px; padding:14px 16px; margin:12px 0; background:var(--bg); }
+  .prompt { background:var(--panel); border-left:3px solid var(--blue); padding:12px 16px; border-radius:0 8px 8px 0; margin:10px 0 14px; }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.4px; }
+  .tablewrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  td.num, th.num { text-align:right; white-space:nowrap; }
+  code { font-family:Consolas, "SF Mono", Menlo, monospace; font-size:.9em; background:var(--code); padding:1px 5px; border-radius:4px; }
+  pre { background:var(--code); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.5; margin:8px 0 4px; }
+  pre code { background:none; padding:0; }
+  .dp { counter-reset:dp; list-style:none; padding:0; margin:0; }
+  .dp li { counter-increment:dp; border:1px solid var(--line); border-radius:8px; padding:12px 14px 12px 48px; margin:10px 0; position:relative; }
+  .dp li::before { content:counter(dp); position:absolute; left:14px; top:12px; width:24px; height:24px; border-radius:50%; background:var(--blue); color:#fff; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .dp .q { font-weight:600; }
+  .dp .trap { color:var(--crit); }
+  .backtrack { border:1px dashed var(--blue-2); border-radius:8px; padding:10px 14px; background:#f3f7fc; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 2px; }
+  .chip { font-size:13px; border:1px solid var(--line); border-radius:999px; padding:2px 10px; background:var(--panel); }
+  .chip.up::before { content:"▲ "; color:var(--blue); } .chip.down::before { content:"▼ "; color:var(--muted); }
+  .answer { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px; line-height:1.75; }
+  .label { display:inline-block; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:6px; }
+  a.mk { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 5px; margin:0 2px; border-radius:11px; font-size:12px; font-weight:700; text-decoration:none; vertical-align:1px; }
+  a.mk.crit { background:var(--crit); color:#fff; } a.mk.major { background:var(--major); color:#fff; } a.mk.ok { background:var(--ok); color:#fff; }
+  .err { border:1px solid var(--line); border-left:4px solid var(--line); border-radius:8px; padding:12px 16px; margin:12px 0; scroll-margin-top:70px; }
+  .err.crit { border-left-color:var(--crit); } .err.major { border-left-color:var(--major); } .err.ok { border-left-color:var(--ok); }
+  .err.flash { box-shadow:0 0 0 3px rgba(45,106,163,.35); transition:box-shadow .2s; }
+  .err h3 { margin:0 0 6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .sev { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:2px 8px; border-radius:4px; }
+  .sev.crit { color:var(--crit); background:var(--crit-bg); } .sev.major { color:var(--major); background:var(--major-bg); } .sev.ok { color:var(--ok); background:var(--ok-bg); }
+  .err dl { display:grid; grid-template-columns:110px 1fr; gap:4px 12px; margin:8px 0 0; }
+  .err dt { color:var(--muted); font-size:14px; } .err dd { margin:0; }
+  .score { font-size:28px; font-weight:700; color:var(--crit); }
+  .bar { height:8px; background:var(--line); border-radius:4px; overflow:hidden; min-width:80px; }
+  .bar span { display:block; height:100%; background:var(--blue-2); }
+  .verdict { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  footer { margin-top:36px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+  footer a, .intro a { color:var(--blue); }
+  @media (max-width:600px) {
+    h1 { font-size:22px; }
+    .err dl { grid-template-columns:1fr; }
+    .err dt { margin-top:6px; }
+    nav.tabs button { padding:8px 10px; font-size:14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="who">Ainoa Figueroa Vidal · sample work</div>
+  <h1>One long-horizon bioinformatics task, a model's answer, and how I'd grade it</h1>
+  <p class="sub">Ulcerative colitis transcriptomics on public GEO data, through to a LINCS L1000 drug-repositioning query.</p>
+</header>
+
+<div class="intro">
+  <p>This task is built on the pipeline from my MSc thesis in Bioinformatics and Biostatistics: four GEO cohorts, 228 samples, per-cohort <code>limma</code>, a cross-platform <code>RankProd</code> meta-analysis and a LINCS L1000 query with <code>signatureSearch</code>. Every decision point below is one I had to get right myself.</p>
+  <p>I also turned the thesis's main limitation, the lack of an independent validation cohort, into the held-out test of the task.</p>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="true" aria-controls="p-task" id="t-task">1 · Task</button>
+  <button role="tab" aria-selected="false" aria-controls="p-answer" id="t-answer">2 · Model answer</button>
+  <button role="tab" aria-selected="false" aria-controls="p-review" id="t-review">3 · Review</button>
+</nav>
+
+<!-- ============ TASK ============ -->
+<section class="panel active" id="p-task" role="tabpanel" aria-labelledby="t-task">
+  <h2>Task prompt</h2>
+  <div class="prompt">
+    Using only the three Affymetrix cohorts below, build a consensus gene signature of <b>active ulcerative colitis versus healthy mucosa</b>. Freeze it. Then (a) test whether it reproduces in the Illumina cohort GSE114527, which you must not open until the signature is frozen, and (b) query LINCS L1000 for compounds that reverse it. Report every sample-selection rule, the integration method and why you chose it, the held-out result, and the top compounds with how you validated the ranking.
+  </div>
+
+  <h3>Inputs (all public)</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Dataset</th><th>Platform</th><th>Role</th><th>What makes it tricky</th></tr></thead>
+    <tbody>
+      <tr><td><code>GSE87466</code></td><td>Affymetrix HT HG-U133+ PM</td><td>Build</td><td>Probe IDs carry a <code>_PM_</code> infix</td></tr>
+      <tr><td><code>GSE38713</code></td><td>Affymetrix HG-U133 Plus 2.0 (GPL570)</td><td>Build</td><td>Mixes involved, non-involved and remission biopsies</td></tr>
+      <tr><td><code>GSE47908</code></td><td>Affymetrix HG-U133 Plus 2.0 (GPL570)</td><td>Build</td><td>Includes dysplasia samples; <code>!Sample_title</code> precedes <code>!Sample_geo_accession</code></td></tr>
+      <tr><td><code>GSE114527</code></td><td>Illumina, rectal biopsies</td><td><b>Held out</b></td><td>Detection P-value columns interleaved with intensities; a technical duplicate; only 6 controls</td></tr>
+      <tr><td>LINCS L1000 Phase II</td><td><code>signatureSearch</code> / ExperimentHub</td><td>Query</td><td>978 measured landmark genes; mostly cancer cell lines</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Deliverables</h3>
+  <ul>
+    <li>Sample sheet with an inclusion or exclusion reason for every GSM.</li>
+    <li>Per-cohort differential-expression tables and the frozen UP/DOWN signature, with thresholds stated.</li>
+    <li>Held-out report for GSE114527.</li>
+    <li>LINCS ranking with a positive-control check, and one paragraph on limitations.</li>
+  </ul>
+
+  <h2>Decision points the answer has to get through</h2>
+  <ol class="dp">
+    <li><span class="q">Who counts as "active UC"?</span> <span class="trap">Trap:</span> GSE38713 labels remission and non-involved mucosa as UC too; GSE47908 contains dysplasia. A practitioner keeps involved, active samples only and logs each exclusion.</li>
+    <li><span class="q">Probe annotation on the PM array.</span> <span class="trap">Trap:</span> GSE87466 IDs look like <code>1007_PM_s_at</code>, so <code>hgu133plus2.db</code> matches almost nothing unless the infix is stripped. The failure is silent; the check is the annotation rate per cohort.</li>
+    <li><span class="q">Several probes per gene.</span> State the rule (maximum |log2FC|, mean, or most variable) and its bias: maximum |log2FC| keeps real signal from weak probes but can inflate fold changes when probes disagree.</li>
+    <li><span class="q">Integrating platforms.</span> <span class="trap">Trap:</span> jointly normalising Affymetrix and Illumina intensities. A practitioner runs <code>limma</code> per cohort (eBayes, Benjamini–Hochberg) and combines ranks across cohorts, e.g. <code>RankProd</code> on the intersected genes.</li>
+    <li><span class="q">Freezing before testing.</span> The signature (genes, directions, thresholds) is fixed before GSE114527 is opened. Its Illumina file must have the Detection P-value columns split off before log2 and quantile normalisation, and the duplicate column (suffix <code>_a</code>) removed.</li>
+    <li><span class="q">Building the query.</span> 100–200 genes per direction ranked by significance, converted to Entrez IDs; expect some to drop out because L1000 measures 978 landmarks and infers the rest.</li>
+    <li><span class="q">Reading the score.</span> <span class="trap">Trap:</span> sign. Reversal means a <b>negative</b> connectivity score. The positive control is approved small molecules for UC; biologics are barely in L1000, and hits profiled in HT29 (colon) deserve more weight than MCF7 or A549.</li>
+  </ol>
+  <div class="backtrack"><b>Backtracking point.</b> If the frozen signature reproduces poorly in GSE114527, the expected move is to re-check sample selection and annotation (decision points 1–2) before touching thresholds. Tuning thresholds on the held-out cohort is leakage.</div>
+
+  <h2>Answer key (checkable)</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Cohort</th><th class="num">Active UC</th><th class="num">Controls</th></tr></thead>
+    <tbody>
+      <tr><td>GSE87466</td><td class="num">87</td><td class="num">21</td></tr>
+      <tr><td>GSE38713 (involved, active only)</td><td class="num">15</td><td class="num">13</td></tr>
+      <tr><td>GSE47908 (dysplasia removed)</td><td class="num">39</td><td class="num">15</td></tr>
+      <tr><td>GSE114527, held out (duplicate removed)</td><td class="num">32</td><td class="num">6</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:12px">Markers that must come out with the right sign in the build cohorts and again in the held-out cohort:</p>
+  <div class="chips">
+    <span class="chip up">REG1A</span><span class="chip up">REG1B</span><span class="chip up">REG3A</span><span class="chip up">S100A8/A9</span><span class="chip up">LCN2</span><span class="chip up">DUOX2</span>
+    <span class="chip down">AQP8</span><span class="chip down">HMGCS2</span><span class="chip down">CLDN8</span><span class="chip down">SLC26A3</span>
+  </div>
+  <p class="muted" style="margin-top:10px">Positive control for the LINCS step: approved small molecules for UC (e.g. corticosteroids, tofacitinib) should score NCS &lt; 0.</p>
+
+  <h2>Rubric</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Criterion</th><th class="num">Points</th></tr></thead>
+    <tbody>
+      <tr><td>Cohort curation and sample exclusions, logged per GSM</td><td class="num">20</td></tr>
+      <tr><td>Platform-correct preprocessing and annotation</td><td class="num">20</td></tr>
+      <tr><td>Integration method suited to mixed platforms, with justification</td><td class="num">20</td></tr>
+      <tr><td>Held-out validation without leakage</td><td class="num">15</td></tr>
+      <tr><td>LINCS query construction and score interpretation</td><td class="num">15</td></tr>
+      <tr><td>Reporting and reproducibility (versions, seeds, thresholds)</td><td class="num">10</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ ANSWER ============ -->
+<section class="panel" id="p-answer" role="tabpanel" aria-labelledby="t-answer">
+  <h2>Model answer</h2>
+  <p class="muted">Illustrative and condensed: written to show the failure modes I see most often in this kind of task, not copied from a specific model. Click a marker to jump to its review note.</p>
+  <div class="answer">
+    <span class="label">Response</span><br>
+    I downloaded the series matrices for all four cohorts and merged them into a single expression matrix<a class="mk crit" href="#e1" data-target="e1">1</a>. After quantile normalisation across all samples I removed platform effects with ComBat and fitted <code>limma</code> for UC versus control, with eBayes moderation, Benjamini–Hochberg FDR &lt; 0.05 and |log2FC| ≥ 1<a class="mk major" href="#e2" data-target="e2">2</a>. For GSE38713 I used every sample annotated as ulcerative colitis<a class="mk major" href="#e3" data-target="e3">3</a>. Probes from all Affymetrix cohorts were annotated with <code>hgu133plus2.db</code><a class="mk major" href="#e4" data-target="e4">4</a>.
+    <br><br>
+    The signature is large and robust: GSE114527 confirms it, since most signature genes are also significant there<a class="mk crit" href="#e5" data-target="e5">5</a>. I then queried LINCS L1000 with the top 150 UP and 150 DOWN genes; the best repositioning candidates are the compounds with the highest positive connectivity scores<a class="mk crit" href="#e6" data-target="e6">6</a>. Infliximab and vedolizumab were not recovered, so the positive control failed and the ranking should be treated with caution<a class="mk major" href="#e7" data-target="e7">7</a>.
+  </div>
+  <p class="muted" style="margin-top:10px">Marker colours: <span class="sev crit">critical</span> changes the scientific conclusion · <span class="sev major">major</span> degrades the result or its interpretation.</p>
+</section>
+
+<!-- ============ REVIEW ============ -->
+<section class="panel" id="p-review" role="tabpanel" aria-labelledby="t-review">
+  <h2>Verdict</h2>
+  <div class="card verdict">
+    <div><div class="score">29 / 100</div><div class="muted">Fails</div></div>
+    <p style="margin:0;flex:1;min-width:220px">Two critical errors would each change the scientific conclusion on their own: the held-out cohort leaks into training, and the connectivity score is read with the wrong sign. The differential-expression engine is right; the data going into it is not.</p>
+  </div>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Criterion</th><th class="num">Score</th><th style="width:30%"></th></tr></thead>
+    <tbody>
+      <tr><td>Cohort curation and exclusions</td><td class="num">6 / 20</td><td><div class="bar"><span style="width:30%"></span></div></td></tr>
+      <tr><td>Preprocessing and annotation</td><td class="num">6 / 20</td><td><div class="bar"><span style="width:30%"></span></div></td></tr>
+      <tr><td>Integration method</td><td class="num">8 / 20</td><td><div class="bar"><span style="width:40%"></span></div></td></tr>
+      <tr><td>Held-out validation</td><td class="num">0 / 15</td><td><div class="bar"><span style="width:0%"></span></div></td></tr>
+      <tr><td>LINCS query and interpretation</td><td class="num">4 / 15</td><td><div class="bar"><span style="width:27%"></span></div></td></tr>
+      <tr><td>Reporting and reproducibility</td><td class="num">5 / 10</td><td><div class="bar"><span style="width:50%"></span></div></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Annotated errors</h2>
+
+  <div class="err crit" id="e1">
+    <h3><span class="sev crit">Critical</span> 1 · The held-out cohort is used to build the signature</h3>
+    <dl>
+      <dt>What</dt><dd>GSE114527 was merged in before anything was frozen.</dd>
+      <dt>Why it matters</dt><dd>Every later "validation" on that cohort is circular. This alone invalidates the claim in marker 5.</dd>
+      <dt>Fix</dt><dd>Build on the three Affymetrix cohorts only, freeze the signature, then open GSE114527 once.</dd>
+    </dl>
+  </div>
+
+  <div class="err major" id="e2">
+    <h3><span class="sev major">Major</span> 2 · Right test, wrong data model</h3>
+    <dl>
+      <dt>Credit</dt><dd><code>limma</code> with eBayes, BH correction and explicit thresholds is the correct engine for microarray intensities.</dd>
+      <dt>What</dt><dd>Quantile-normalising Affymetrix and Illumina intensities together and then running ComBat.</dd>
+      <dt>Why it matters</dt><dd>Intensities from different platforms are not on a common scale, and the UC/control balance differs by cohort, so batch correction can remove real biology or create it.</dd>
+      <dt>Fix</dt><dd>Run <code>limma</code> per cohort, intersect annotated genes, and combine ranks across cohorts (e.g. <code>RankProd</code>), which makes no shared-distribution assumption.</dd>
+    </dl>
+  </div>
+
+  <div class="err major" id="e3">
+    <h3><span class="sev major">Major</span> 3 · Remission and non-involved mucosa counted as active disease</h3>
+    <dl>
+      <dt>What</dt><dd>"Every sample annotated as ulcerative colitis" in GSE38713 includes remission and non-involved biopsies.</dd>
+      <dt>Why it matters</dt><dd>It dilutes exactly the active-inflammation signal the task asks for.</dd>
+      <dt>Fix</dt><dd>Keep involved, active samples (15 UC vs 13 controls) and log every exclusion by GSM. The same applies to the dysplasia samples in GSE47908.</dd>
+    </dl>
+  </div>
+
+  <div class="err major" id="e4">
+    <h3><span class="sev major">Major</span> 4 · Silent annotation loss on the PM array</h3>
+    <dl>
+      <dt>What</dt><dd>GSE87466 IDs carry a <code>_PM_</code> infix that <code>hgu133plus2.db</code> does not recognise.</dd>
+      <dt>Why it matters</dt><dd>Most probes in the largest cohort fail to map without an error, which shrinks the shared gene universe for every later step.</dd>
+      <dt>Check</dt><dd>
+<pre><code>ids  &lt;- featureNames(eset)             # "1007_PM_s_at", ...
+fix  &lt;- sub("_PM_", "_", ids)           # "1007_s_at"
+mean(!is.na(mapIds(hgu133plus2.db, fix, "SYMBOL", "PROBEID")))</code></pre>
+        Report this rate before and after the fix, for every cohort.</dd>
+    </dl>
+  </div>
+
+  <div class="err crit" id="e5">
+    <h3><span class="sev crit">Critical</span> 5 · Circular validation, measured the wrong way</h3>
+    <dl>
+      <dt>What</dt><dd>"Most signature genes are also significant in GSE114527."</dd>
+      <dt>Why it matters</dt><dd>Circular because of marker 1. Even without leakage, per-gene significance in a cohort with 6 controls is underpowered and says little about the signature as a whole.</dd>
+      <dt>Fix</dt><dd>Report direction concordance of the frozen signature and of the named markers, and how well a signature score separates UC from controls in the held-out cohort.</dd>
+    </dl>
+  </div>
+
+  <div class="err crit" id="e6">
+    <h3><span class="sev crit">Critical</span> 6 · Connectivity read with the wrong sign</h3>
+    <dl>
+      <dt>What</dt><dd>Candidates ranked by the highest positive score.</dd>
+      <dt>Why it matters</dt><dd>A positive score means the compound <i>mimics</i> the disease signature. The list returned is the opposite of what was asked.</dd>
+      <dt>Fix</dt><dd>
+<pre><code>res &lt;- result(gess_lincs(qsig, sortby = "NCS", tau = TRUE))
+head(res[order(res$NCS), c("pert", "cell", "NCS")])  # most negative = reversal</code></pre></dd>
+    </dl>
+  </div>
+
+  <div class="err major" id="e7">
+    <h3><span class="sev major">Major</span> 7 · Wrong positive control</h3>
+    <dl>
+      <dt>What</dt><dd>Missing infliximab and vedolizumab treated as a failed control.</dd>
+      <dt>Why it matters</dt><dd>L1000 profiles are mostly small molecules in cancer cell lines; monoclonal antibodies are essentially not represented, so their absence says nothing about the pipeline.</dd>
+      <dt>Fix</dt><dd>Check that approved small molecules (corticosteroids, tofacitinib) score NCS &lt; 0, and weight hits profiled in HT29 (colon) above MCF7 or A549.</dd>
+    </dl>
+  </div>
+
+  <h2>Feedback to the model</h2>
+  <div class="card">
+    <p>Your differential-expression settings are sound, but the result can't be trusted yet. First, keep GSE114527 out until the signature is frozen; your validation currently tests the data you trained on. Second, read connectivity scores with the correct sign: reversal is negative NCS, so your candidate list is inverted. Before rerunning, restrict GSE38713 to involved, active samples, strip the <code>_PM_</code> infix before annotating GSE87466 and report annotation rates, and integrate the cohorts with per-cohort <code>limma</code> plus a rank-based meta-analysis instead of joint normalisation. Use approved small molecules as the positive control.</p>
+  </div>
+</section>
+
+<footer>
+  Ainoa Figueroa Vidal · MSc Bioinformatics and Biostatistics · AI engineer working on LLM evaluation in health data.<br>
+  The thesis pipeline (R/Bioconductor and Python, from raw GEO data to ranked candidates) is available on request · <a href="https://github.com/Ainoafv">github.com/Ainoafv</a>
+</footer>
+
+</div>
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  function show(id, focus) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('aria-controls') === id;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      document.getElementById(t.getAttribute('aria-controls')).classList.toggle('active', on);
+      if (on && focus) t.focus();
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t.getAttribute('aria-controls')); window.scrollTo({ top: 0 }); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        var n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        show(tabs[n].getAttribute('aria-controls'), true);
+      }
+    });
+  });
+  document.querySelectorAll('a.mk').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var el = document.getElementById(a.getAttribute('data-target'));
+      show('p-review');
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.classList.add('flash');
+      setTimeout(function () { el.classList.remove('flash'); }, 1600);
+    });
+  });
+})();
+</script>
+</body>
+</html>
